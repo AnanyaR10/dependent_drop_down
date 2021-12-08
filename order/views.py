@@ -4,6 +4,7 @@ from model.models import Model
 from upazilla.models import Upazilla
 from .models import Order
 from django.http import JsonResponse
+import requests
 # Create your views here.
 
 
@@ -13,8 +14,13 @@ def main_view(request):
 
 
 def get_json_car_data(request):
+    div_list=[]
+    data=requests.get("https://bdapis.herokuapp.com/api/v1.1/divisions")
+    division=data.json()['data']
+    division1=list(division)
     qs_val = list(Car.objects.values())
-    return JsonResponse({'data': qs_val})
+    print(qs_val)
+    return JsonResponse({'data': division1})
 
 
 def get_json_model_data(request, *args, **kwargs):
