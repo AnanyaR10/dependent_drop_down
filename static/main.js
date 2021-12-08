@@ -30,9 +30,11 @@ $.ajax({
         const carsData = response.data
         carsData.map(item => {
             const option = document.createElement('div')
-            option.textContent = item.name
+            //option.textContent = item.name
+            option.textContent = item.division
             option.setAttribute('class', 'item')
-            option.setAttribute('data-value', item.name)
+            option.setAttribute('data-value', item.division)
+            //option.setAttribute('data-value', item.name)
             carsDataBox.appendChild(option)
         })
 
