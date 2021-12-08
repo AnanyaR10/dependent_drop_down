@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<div id="alert-box"></div>
 <form class="mt-5" id="car-form">
     {% csrf_token %}
     <div class="ui selection dropdown" id="cars">
         <input type="hidden" name="car">
         <i class="dropdown icon"></i>
-        <div class="default text">Choose a car</div>
+        <div class="default text" id="car-text">Choose a car</div>
         <div class="menu" id="cars-data-box">
             {% comment %} {% for car in qs %}
             <div class="item" data-value={{car}}>{{car.name}}</div>
@@ -20,6 +21,18 @@
         <div class="default text" id="model-text">Choose a model</div>
         <div class="menu" id="models-data-box">
         </div>
+    </div>
+
+    <div class="ui selection dropdown" id="upazillas">
+        <input type="hidden" name="upazilla">
+        <i class="dropdown icon"></i>
+        <div class="default text" id="upazilla-text">Choose an upazilla</div>
+        <div class="menu" id="upazillas-data-box">
+        </div>
+    </div>
+
+    <div id="btn-box" class="mt-5 not-visible">
+        <button type="submit" class="ui primary button">Save</button>
     </div>
 
 </form>
