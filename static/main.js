@@ -17,6 +17,8 @@ const upazillaText = document.getElementById('upazilla-text')
 const btnBox=document.getElementById('btn-box')
 const alertBox=document.getElementById('alert-box')
 
+var selectedDivision;
+
 
 
 
@@ -47,6 +49,7 @@ $.ajax({
 carInput.addEventListener('change', e => {
     console.log(e.target.value)
     const selectedCar = e.target.value
+    selectedDivision=selectedCar
 
     alertBox.innerHTML = ""
     modelsDataBox.innerHTML = ""
@@ -61,9 +64,9 @@ carInput.addEventListener('change', e => {
             const modelsData = response.data
             modelsData.map(item => {
                 const option = document.createElement('div')
-                option.textContent = item.name
+                option.textContent = item.district
                 option.setAttribute('class', 'item')
-                option.setAttribute('data-value', item.name)
+                option.setAttribute('data-value', item.district)
                 modelsDataBox.appendChild(option)
             })
 
@@ -88,15 +91,15 @@ modelInput.addEventListener('change', e => {
     upazillaText.textContent = "Choose an upazilla"
     $.ajax({
         type: 'GET',
-        url: `/upazillas-json/${selectedModel}/`,
+        url: `/upazillas-json/${selectedDivision}/${selectedModel}`,
         success: function (response) {
             console.log(response.data)
             const upazillasData = response.data
             upazillasData.map(item => {
                 const option = document.createElement('div')
-                option.textContent = item.name
+                option.textContent = item.upazilla
                 option.setAttribute('class', 'item')
-                option.setAttribute('data-value', item.name)
+                option.setAttribute('data-value', item.upazilla)
                 upazillasDataBox.appendChild(option)
             })
 

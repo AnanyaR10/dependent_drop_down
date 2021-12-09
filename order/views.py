@@ -25,13 +25,36 @@ def get_json_car_data(request):
 
 def get_json_model_data(request, *args, **kwargs):
     selectedCar = kwargs.get('car')
+    
     obj_models = list(Model.objects.filter(car__name=selectedCar).values())
-    return JsonResponse({'data': obj_models})
+
+
+    api_link="https://bdapis.herokuapp.com/api/v1.1/division/"+selectedCar
+    req=requests.get(api_link)
+    district=req.json()['data']
+    district1=list(district)
+    return JsonResponse({'data': district1})
 
 def get_json_upazilla_data(request, *args, **kwargs):
+    selectedCar = kwargs.get('car')
     selectedModel = kwargs.get('model')
     obj_upazillas = list(Upazilla.objects.filter(model__name=selectedModel).values())
-    return JsonResponse({'data': obj_upazillas})
+
+    api_link="https://bdapis.herokuapp.com/api/v1.1/division/"+selectedCar
+    req=requests.get(api_link)
+    district=req.json()['data'] 
+    print(selectedModel)
+    upazilla=[]
+    for i in district:
+        if i['district']==selectedModel: 
+            upazilla=i["upazilla"]
+            print(upazilla)
+            break
+    upazilla_list=[]
+    for up in upazilla:
+        new_dict={"upazilla":up}
+        upazilla_list.append(new_dict)
+    return JsonResponse({'data': upazilla_list})
 
 def create_order(request):
     if request.is_ajax():
