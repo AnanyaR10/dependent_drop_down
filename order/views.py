@@ -9,47 +9,35 @@ import requests
 
 
 def main_view(request):
-    qs = Car.objects.all()
-    return render(request, 'main.html', {'qs': qs})
+    return render(request, 'main.html')
 
 
-def get_json_car_data(request):
-    div_list=[]
+def get_json_division_data(request):
     data=requests.get("https://bdapis.herokuapp.com/api/v1.1/divisions")
-    division=data.json()['data']
-    division1=list(division)
-    qs_val = list(Car.objects.values())
-    print(qs_val)
-    return JsonResponse({'data': division1})
+    division=list(data.json()['data'])
+    return JsonResponse({'data': division})
 
 
-def get_json_model_data(request, *args, **kwargs):
-    selectedCar = kwargs.get('car')
-    
-    obj_models = list(Model.objects.filter(car__name=selectedCar).values())
-
-
-    api_link="https://bdapis.herokuapp.com/api/v1.1/division/"+selectedCar
-    req=requests.get(api_link)
-    district=req.json()['data']
-    district1=list(district)
-    return JsonResponse({'data': district1})
+def get_json_district_data(request, *args, **kwargs):
+    selectedDivision = kwargs.get('division')
+    req=requests.get("https://bdapis.herokuapp.com/api/v1.1/division/"+selectedDivision)
+    district=list(req.json()['data'])
+    return JsonResponse({'data': district})
 
 def get_json_upazilla_data(request, *args, **kwargs):
-    selectedCar = kwargs.get('car')
-    selectedModel = kwargs.get('model')
-    obj_upazillas = list(Upazilla.objects.filter(model__name=selectedModel).values())
-
-    api_link="https://bdapis.herokuapp.com/api/v1.1/division/"+selectedCar
-    req=requests.get(api_link)
+    selectedDivision = kwargs.get('division')
+    selectedDistrict = kwargs.get('district')
+    req=requests.get("https://bdapis.herokuapp.com/api/v1.1/division/"+selectedDivision)
     district=req.json()['data'] 
-    print(selectedModel)
+
+    #filtering upazillas based on district
     upazilla=[]
     for i in district:
-        if i['district']==selectedModel: 
+        if i['district']==selectedDistrict: 
             upazilla=i["upazilla"]
-            print(upazilla)
             break
+        
+    #formatting to send as json
     upazilla_list=[]
     for up in upazilla:
         new_dict={"upazilla":up}

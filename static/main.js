@@ -1,14 +1,14 @@
 console.log('hello')
 
-const carsDataBox = document.getElementById('cars-data-box')
-const carInput = document.getElementById('cars')
-const carText = document.getElementById('car-text')
+const divisionsDataBox = document.getElementById('divisions-data-box')
+const divisionInput = document.getElementById('divisions')
+const divisionText = document.getElementById('division-text')
 
-const carForm=document.getElementById('car-form')
+const addressForm=document.getElementById('address-form')
 
-const modelsDataBox = document.getElementById('models-data-box')
-const modelInput = document.getElementById('models')
-const modelText = document.getElementById('model-text')
+const districtsDataBox = document.getElementById('districts-data-box')
+const districtInput = document.getElementById('districts')
+const districtText = document.getElementById('district-text')
 
 const upazillasDataBox = document.getElementById('upazillas-data-box')
 const upazillaInput = document.getElementById('upazillas')
@@ -26,18 +26,16 @@ const csrf=document.getElementsByName('csrfmiddlewaretoken')
 
 $.ajax({
     type: 'GET',
-    url: '/cars-json/',
+    url: '/divisions-json/',
     success: function (response) {
         console.log(response.data)
-        const carsData = response.data
-        carsData.map(item => {
+        const divisionsData = response.data
+        divisionsData.map(item => {
             const option = document.createElement('div')
-            //option.textContent = item.name
             option.textContent = item.division
             option.setAttribute('class', 'item')
             option.setAttribute('data-value', item.division)
-            //option.setAttribute('data-value', item.name)
-            carsDataBox.appendChild(option)
+            divisionsDataBox.appendChild(option)
         })
 
     },
@@ -46,28 +44,27 @@ $.ajax({
     },
 })
 
-carInput.addEventListener('change', e => {
+divisionInput.addEventListener('change', e => {
     console.log(e.target.value)
-    const selectedCar = e.target.value
-    selectedDivision=selectedCar
+    selectedDivision=e.target.value
 
     alertBox.innerHTML = ""
-    modelsDataBox.innerHTML = ""
-    modelText.textContent = "Choose a model"
+    districtsDataBox.innerHTML = ""
+    districtText.textContent = "Choose a district"
     upazillasDataBox.innerHTML = ""
     upazillaText.textContent = "Choose an upazilla"
     $.ajax({
         type: 'GET',
-        url: `/models-json/${selectedCar}/`,
+        url: `/districts-json/${selectedDivision}/`,
         success: function (response) {
             console.log(response.data)
-            const modelsData = response.data
-            modelsData.map(item => {
+            const districtsData = response.data
+            districtsData.map(item => {
                 const option = document.createElement('div')
                 option.textContent = item.district
                 option.setAttribute('class', 'item')
                 option.setAttribute('data-value', item.district)
-                modelsDataBox.appendChild(option)
+                districtsDataBox.appendChild(option)
             })
 
            // modelInput.addEventListener('change', e=>{  
@@ -82,16 +79,16 @@ carInput.addEventListener('change', e => {
 })
 
 
-modelInput.addEventListener('change', e => {
+districtInput.addEventListener('change', e => {
     console.log(e.target.value)
-    const selectedModel = e.target.value
+    const selectedDistrict = e.target.value
     
     alertBox.innerHTML = ""
     upazillasDataBox.innerHTML = ""
     upazillaText.textContent = "Choose an upazilla"
     $.ajax({
         type: 'GET',
-        url: `/upazillas-json/${selectedDivision}/${selectedModel}`,
+        url: `/upazillas-json/${selectedDivision}/${selectedDistrict}`,
         success: function (response) {
             console.log(response.data)
             const upazillasData = response.data
@@ -115,7 +112,7 @@ modelInput.addEventListener('change', e => {
 })
 // 
 
-carForm.addEventListener('submit',e=>{
+addressForm.addEventListener('submit',e=>{
     e.preventDefault()
     console.log("submitted")
 
@@ -124,8 +121,8 @@ carForm.addEventListener('submit',e=>{
         url:'/create/',
         data:{
             'csrfmiddlewaretoken':csrf[0].value,
-            'car':carText.textContent,
-            'model':modelText.textContent,
+            'car':divisionText.textContent,
+            'model':districtText.textContent,
         },
         success: function(response){
             console.log(response)
