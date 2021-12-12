@@ -121,8 +121,9 @@ addressForm.addEventListener('submit',e=>{
         url:'/create/',
         data:{
             'csrfmiddlewaretoken':csrf[0].value,
-            'car':divisionText.textContent,
-            'model':districtText.textContent,
+            'division':divisionText.textContent,
+            'district':districtText.textContent,
+            'upazilla': upazillaText.textContent,
         },
         success: function(response){
             console.log(response)

@@ -1,7 +1,4 @@
 from django.shortcuts import render
-from car.models import Car
-from model.models import Model
-from upazilla.models import Upazilla
 from .models import Order
 from django.http import JsonResponse
 import requests
@@ -46,11 +43,10 @@ def get_json_upazilla_data(request, *args, **kwargs):
 
 def create_order(request):
     if request.is_ajax():
-        car=request.POST.get('car')
-        car_obj=Car.objects.get(name=car)
-        model=request.POST.get('model')
-        model_obj=Model.objects.get(name=model, car__name=car_obj.name)
-        Order.objects.create(car=car_obj, model=model_obj)
+        division_name=request.POST.get('division')
+        district_name=request.POST.get('district')
+        upazilla_name=request.POST.get('upazilla')
+        Order.objects.create(division=division_name,district=district_name,upazilla=upazilla_name)
         return JsonResponse({'created':True})
     else:
         return JsonResponse({'created': False}, safe=False)
