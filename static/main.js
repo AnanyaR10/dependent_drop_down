@@ -131,7 +131,7 @@ addressForm.addEventListener('submit',e=>{
                                     <div class="header">
                                     Success!
                                     </div>
-                                    <p> Your order has been placed </p>
+                                    <p> Your address hase been saved </p>
                                 </div>`
         },
         error:function(error){
