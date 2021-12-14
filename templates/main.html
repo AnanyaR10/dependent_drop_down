@@ -33,4 +33,12 @@
     </div>
 
 </form>
+
+<div >
+    <form id="search-form" autocomplete="off">
+        {% csrf_token %}
+        <input type="text" id="search-input" placeholder="search by division or district name">
+    </form>
+    <div id="results-box"></div>
+</div>
 {% endblock %}

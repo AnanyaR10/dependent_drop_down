@@ -1,3 +1,63 @@
+// live search starts from here
+
+const url=window.location.href
+const searchForm= document.getElementById('search-form')
+const searchInput=document.getElementById('search-input')
+const resultsBox=document.getElementById('results-box')
+
+const csrf_live=document.getElementsByName('csrfmiddlewaretoken')[0].value
+
+console.log(csrf_live)
+
+const sendSearchData= (address) =>{
+    $.ajax({
+        type:'POST',
+        url:'search/',
+        data:{
+            'csrfmiddlewaretoken':csrf_live,
+            'address':address,
+        },
+        success:(res)=>{
+            console.log(res.data)
+            const data=res.data
+            resultsBox.innerHTML=``
+            if(Array.isArray(data)){
+                data.forEach(ad=>{
+                    resultsBox.innerHTML+=
+                    `<div>
+                        <h3> division :${ad.division} </h3>
+                        <h3> district :${ad.district} </h3>
+                        <h3> upazilla :${ad.upazilla} </h3>
+                        <br>
+                        <br>
+                    </div>
+                    `
+                })
+            }
+            else{
+                if(searchInput.value.length>0){
+                    resultsBox.innerHTML=`<b>${data}</b>`
+                }
+                else{
+                    resultsBox.innerHTML=``
+                }
+
+            }
+        },
+        error: (err) =>{
+            console.log(err)
+        }
+    })
+}
+
+searchInput.addEventListener('keyup',e=>{
+    console.log(e.target.value)
+    sendSearchData(e.target.value)
+})
+
+
+
+// dependent dropdown starts from here
 console.log('hello')
 
 const divisionsDataBox = document.getElementById('divisions-data-box')
@@ -18,8 +78,6 @@ const btnBox=document.getElementById('btn-box')
 const alertBox=document.getElementById('alert-box')
 
 var selectedDivision;
-
-
 
 
 const csrf=document.getElementsByName('csrfmiddlewaretoken')
@@ -145,3 +203,5 @@ addressForm.addEventListener('submit',e=>{
         }
     })
 })
+
+

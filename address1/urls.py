@@ -7,4 +7,5 @@ urlpatterns = [
     path('districts-json/<str:division>/', views.get_json_district_data, name='models-json'),
     path('upazillas-json/<str:division>/<str:district>/', views.get_json_upazilla_data, name='upazillas-json'),
     path('create/',views.create_order,name='create-order'),
+    path('search/', views.search_results, name="search"),
 ]
